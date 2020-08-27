@@ -1,2 +1,2 @@
 # python-tourism-web
-# 直接运行run.py便可
+# 直接运行run.py
