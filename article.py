@@ -151,7 +151,10 @@ def search_article():
     keyword = request.args.get('keyword', '')
     list1 = Article.query.filter(or_(Article.title.like("%" + keyword + "%") if keyword is not None else "",
                                      Article.position.like("%" + keyword + "%") if keyword is not None else ""
-                                     )).paginate(page, 10, error_out=False)
+                                     ))
+    list1=list1.paginate(page, 10, error_out=False)
+    allarticles = list1.total
+    allpages = list1.pages
     list1 = list1.items
     list2 = []
     for i in list1:
@@ -166,4 +169,4 @@ def search_article():
             'time': i.time.strftime('%Y-%m-%d %H:%M')
         }
         list2.append(dict1)
-    return jsonify({'search_result': list2})
+    return jsonify({'search_result': list2,'allarticles':allarticles,'allpages':allpages})
