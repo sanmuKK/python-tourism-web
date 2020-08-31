@@ -8,7 +8,8 @@ from comment import comment
 def creat_app():
     app = Flask(__name__)
     app.config['JSON_AS_ASCII'] = False
-    app.config["SQLALCHEMY_DATABASE_URI"]='mysql://root:password@localhost:3306/first_flask'
+    app.config["SQLALCHEMY_DATABASE_URI"]='mysql://root:l.1322630122@localhost:3306/first_flask'
+    #app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://first_flask:l.1322630122@localhost:3306/first_flask'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = 'False'
     app.secret_key='pleasedonthitme'
     app.config['MAIL_SERVER'] = 'smtp.sina.com'

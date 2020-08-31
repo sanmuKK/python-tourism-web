@@ -77,6 +77,7 @@ class Thumb(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userid = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
     article_id = db.Column(db.Integer, db.ForeignKey('article.id', ondelete='CASCADE'))
+    time = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Thumb %r>' % self.id
@@ -86,6 +87,7 @@ class Collection(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userid = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
     articleid = db.Column(db.Integer, db.ForeignKey('article.id', ondelete='CASCADE'))
+    time = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Collection %r>' % self.id

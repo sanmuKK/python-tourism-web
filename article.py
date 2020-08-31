@@ -78,7 +78,8 @@ def getarticle():
         'thumb': i.thumb,
         'collection': i.collection,
         'if_thumb': thumb_status,
-        'if_collection': collection_status
+        'if_collection': collection_status,
+        'time':i.time.strftime('%Y-%m-%d %H:%M')
     }
     return jsonify(dict1)
 
@@ -97,7 +98,8 @@ def get_all_article():
             'author': i.owner_user.name,
             'id': i.id,
             'title': i.title,
-            'position': i.position
+            'position': i.position,
+            'time': i.time.strftime('%Y-%m-%d %H:%M')
         }
         list2.append(dict1)
     return jsonify({'articles': list2})
@@ -127,10 +129,10 @@ def thumb():
 @login_required
 def collect():
     dict = json.loads(request.get_data(as_text=True))
-    id = dict.get('article_id', '')
+    id = dict.get('article_id', 0)
     art = Article.query.get(id)
     for i in current_user.collection_list:
-        if i.articleid == id:
+        if i.articleid == int(id):
             art.collection -= 1
             db.session.delete(i)
             db.session.commit()
@@ -160,7 +162,8 @@ def search_article():
             'author': i.owner_user.name,
             'id': i.id,
             'title': i.title,
-            'position': i.position
+            'position': i.position,
+            'time': i.time.strftime('%Y-%m-%d %H:%M')
         }
         list2.append(dict1)
     return jsonify({'search_result': list2})

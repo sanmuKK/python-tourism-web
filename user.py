@@ -28,8 +28,8 @@ def test():
     return jsonify({'status':'success'})
 
 
-@user.route('/login',methods=['POST'])
-def login():
+@user.route('/login_user',methods=['POST'])
+def loginuser():
     dict = json.loads(request.get_data(as_text=True))
     user_id = dict.get('login_id','')
     password = dict.get('login_password','')
@@ -131,7 +131,8 @@ def get_collection():
             'image':dict2['image'],
             'id':i.id,
             'article_id':i.owner_article.id,
-            'article_title':i.owner_article.title
+            'article_title':i.owner_article.title,
+            'time':i.time.strftime('%Y-%m-%d %H:%M')
         }
         list1.append(dict1)
     return jsonify({'collections':list1})
@@ -148,7 +149,8 @@ def get_my_article():
         dict1={
             'image':dict2['image'],
             'article_id':i.id,
-            'article_title':i.title
+            'article_title':i.title,
+            'time': i.time.strftime('%Y-%m-%d %H:%M')
         }
         list1.append(dict1)
     return jsonify({'articles':list1})
@@ -166,7 +168,9 @@ def thumb_me_list():
                 'article_title': i.title,
                 'thumb_id':j.id,
                 'thumb_user_id':j.owner_user.id,
-                'thumb_user_name':j.owner_user.name
+                'thumb_user_name':j.owner_user.name,
+                'thumb_user_avatar':j.owner_user.avatar,
+                'time':j.time.strftime('%Y-%m-%d %H:%M')
             }
             list1.append(dict1)
     list2 = sorted(list1, key=lambda keys: keys['thumb_id'], reverse=True)
@@ -185,7 +189,9 @@ def collect_me_list():
                 'article_title': i.title,
                 'collection_id':j.id,
                 'collection_user_id':j.owner_user.id,
-                'collection_user_name':j.owner_user.name
+                'collection_user_name':j.owner_user.name,
+                'collection_user_avatar': j.owner_user.avatar,
+                'time':j.time.strftime('%Y-%m-%d %H:%M')
             }
             list1.append(dict1)
     list2 = sorted(list1, key=lambda keys: keys['collection_id'], reverse = True)
@@ -206,6 +212,7 @@ def comment_me_list():
                 'comment_text':j.comment,
                 'comment_time':j.time.strftime('%Y-%m-%d %H:%M'),
                 'comment_user_id':j.owner_user.id,
+                'comment_user_avatar': j.owner_user.avatar,
                 'comment_user_name':j.owner_user.name
             }
             list1.append(dict1)
@@ -230,6 +237,7 @@ def reply_me_list():
                 'reply_text':j.reply,
                 'reply_time':j.time.strftime('%Y-%m-%d %H:%M'),
                 'reply_user_id':j.owner_user.id,
+                'reply_user_avatar': j.owner_user.avatar,
                 'reply_user_name':j.owner_user.name
             }
             list1.append(dict1)
@@ -237,9 +245,9 @@ def reply_me_list():
     return jsonify({'reply_me': list2})
 
 
-@user.route('/getinfo')
+@user.route('/getinfo2')
 @login_required
-def getinfo():
+def getinfo3():
     return jsonify({'用户id':current_user.id,'账号':current_user.email,'用户名':current_user.name
                     ,'性别':current_user.sex,'头像':current_user.avatar})
 
