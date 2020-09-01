@@ -71,7 +71,7 @@ def scenic_introduction():
         return jsonify({'name':word,'introduction':data})
     else:
         page = 1
-        url1 = 'http://api.tianapi.com/txapi/scenic/index?key=41d70b21767cd950e6638d1be3fcbf11&num=15&city='+city
+        url1 = 'http://api.tianapi.com/txapi/scenic/index?key=41d70b21767cd950e6638d1be3fcbf11&num=15&city='+city[:2]
         res = requests.get(url1).json()
         if res['code'] == 200:
             rd.hset('is_spider_all', city[:2], 'True')

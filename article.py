@@ -25,7 +25,7 @@ def publish():
                       pay=pay, thumb=0, collection=0, article_id=current_user.id)
     db.session.add(article)
     db.session.commit()
-    return jsonify({'status': 'success'})
+    return jsonify({'status': 'success','id':article.id})
 
 
 @article.route('/del_article', methods=['DELETE'])
