@@ -105,6 +105,7 @@ def get_all_article():
     return jsonify({'articles': list2})
 
 
+
 @article.route('/thumb', methods=['POST'])
 @login_required
 def thumb():
@@ -123,7 +124,6 @@ def thumb():
         db.session.add(t)
         db.session.commit()
     return jsonify({'status': 'add'})
-
 
 @article.route('/collect', methods=['POST'])
 @login_required
@@ -170,3 +170,25 @@ def search_article():
         }
         list2.append(dict1)
     return jsonify({'search_result': list2,'allarticles':allarticles,'allpages':allpages})
+
+
+@article.route('/recommend_article')
+def recommend_article():
+    list1 = Article.query.all()
+    list2 = []
+    for i in list1:
+        image = literal_eval(i.image)
+        dict2 = image[0]
+        dict1 = {
+            'image':dict2['image'],
+            'author': i.owner_user.name,
+            'id': i.id,
+            'title': i.title,
+            'position': i.position,
+            'thumb_num':i.thumb,
+            'collection_num':i.collection,
+            'time': i.time.strftime('%Y-%m-%d %H:%M')
+        }
+        list2.append(dict1)
+    list2 = sorted(list2, key=lambda keys: keys['thumb_num'], reverse=True)
+    return jsonify(list2[:4])
