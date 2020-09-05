@@ -265,3 +265,23 @@ def getinfo2():
 def logoutuser():
     logout_user()
     return jsonify({'status':'success'})
+
+
+@user.route('/get_ohters_article',methods=['POST'])
+def get_ohters_articles():
+    dict = json.loads(request.get_data(as_text=True))
+    user_id = dict.get('user_id', 0)
+    user = User.query.get(int(user_id))
+    art = user.article
+    list1 = []
+    for i in art:
+        image = literal_eval(i.image)
+        dict2 = image[0]
+        dict1={
+            'image':dict2['image'],
+            'article_id':i.id,
+            'article_title':i.title,
+            'time': i.time.strftime('%Y-%m-%d %H:%M')
+        }
+        list1.append(dict1)
+    return jsonify({'articles':list1})

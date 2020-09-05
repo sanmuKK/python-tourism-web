@@ -1,5 +1,5 @@
 from ast import literal_eval
-from flask import jsonify, request, Blueprint, json
+from flask import jsonify, request, Blueprint, json,session
 from flask_login import login_required, current_user
 from models import User, Article, Thumb, Collection
 from config import db
@@ -45,12 +45,12 @@ def del_article():
 def getarticle():
     art_id = int(request.args.get('article_id', 0))
     i = Article.query.get(art_id)
-    if current_user:
-        list1 = current_user.thumb_list
-        list2 = current_user.collection_list
-    else:
+    if session.get('_user_id','') == '':
         list1 = []
         list2 = []
+    else:
+        list1 = current_user.thumb_list
+        list2 = current_user.collection_list
     for ii in list1:
         if ii.article_id == i.id and ii.userid == current_user.id:
             thumb_status = True
@@ -124,6 +124,7 @@ def thumb():
         db.session.add(t)
         db.session.commit()
     return jsonify({'status': 'add'})
+
 
 @article.route('/collect', methods=['POST'])
 @login_required
